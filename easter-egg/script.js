@@ -1,5 +1,5 @@
 const loveTimer = document.getElementById("love-timer");
-const startDate = new Date("2024-11-08T22:50:00");
+const startDate = new Date("2024-10-08T22:50:00");
 
 function updateLoveTimer() {
   const now = new Date();
