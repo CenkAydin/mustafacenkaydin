@@ -286,3 +286,6 @@ h2{
     text-decoration: none;
     color: var(--main-color);
 }
+a{
+    text-decoration: none;
+}

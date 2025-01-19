@@ -1,0 +1,191 @@
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+}
+
+.container {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+}
+
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.7;
+}
+
+.heart-background::before,
+.heart-background::after {
+    content: "❤️";
+    position: absolute;
+    font-size: 2rem;
+    animation: moveHearts 6s linear infinite;
+}
+
+.heart-background::before {
+    left: 20%;
+    animation-duration: 5s;
+}
+
+.heart-background::after {
+    left: 80%;
+    animation-duration: 7s;
+}
+
+@keyframes moveHearts {
+    0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(0.5);
+        opacity: 0;
+    }
+}
+
+.star-background::before,
+.star-background::after {
+    content: "✨";
+    position: absolute;
+    font-size: 1.5rem;
+    animation: moveStars 8s linear infinite;
+}
+
+.star-background::before {
+    left: 30%;
+    animation-duration: 7s;
+}
+
+.star-background::after {
+    left: 70%;
+    animation-duration: 9s;
+}
+
+.star-background span,
+.heart-background span {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: moveRandom 10s linear infinite;
+}
+
+@keyframes moveStars {
+    0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(0.5);
+        opacity: 0;
+    }
+}
+
+.love-counter h2 {
+    font-size: 2rem;
+    margin-top: 20px;
+}
+
+.love-counter p {
+    font-size: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+.gallery img {
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.2);
+}
+
+.hidden-messages button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.hidden-messages button:hover {
+    transform: scale(1.5);
+}
+
+#message-box {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #ffecb3;
+}
+
+@keyframes moveRandom {
+    0% {
+        transform: translate(0, 100vh) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(50vw, -100vh) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .love-counter h2 {
+        font-size: 1.5rem;
+    }
+
+    .love-counter p {
+        font-size: 1.2rem;
+    }
+
+    .gallery img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .hidden-messages button {
+        font-size: 1.5rem;
+    }
+
+    #message-box {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .love-counter h2 {
+        font-size: 1.2rem;
+    }
+
+    .love-counter p {
+        font-size: 1rem;
+    }
+
+    .gallery img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .hidden-messages button {
+        font-size: 1.2rem;
+    }
+
+    #message-box {
+        font-size: 1rem;
+    }
+}
