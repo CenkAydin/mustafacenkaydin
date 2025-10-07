@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Cenk ve Tuğçe'nin özel aşk sayfası - Birlikte izledikleri filmler, diziler, oynadıkları oyunlar ve güzel anıları"
+    />
+    <meta
+      name="keywords"
+      content="aşk, romantik, film, dizi, oyun, anı, Cenk, Tuğçe"
+    />
+    <meta name="author" content="Cenk Aydın" />
+    <meta name="theme-color" content="#e91e63" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Cenk & Tuğçe - Özel Aşk Sayfası" />
+    <meta
+      property="og:description"
+      content="Birlikte geçirdiğimiz güzel anıların koleksiyonu"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=400"
+    />
+
+    <title>Cenk & Tuğçe - Özel Sayfa</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE2IDI4QzIyLjYyNzQgMjggMjggMjIuNjI3NCAyOCAxNkMyOCA5LjM3MjU4IDIyLjYyNzQgNCAxNiA0QzkuMzcyNTggNCA0IDkuMzcyNTggNCAxNkM0IDIyLjYyNzQgOS4zNzI1OCAyOCAxNiAyOFoiIGZpbGw9IiNlOTFlNjMiLz4KPHBhdGggZD0iTTE2IDIyQzE5LjMxMzcgMjIgMjIgMTkuMzEzNyAyMiAxNkMyMiAxMi42ODYzIDE5LjMxMzcgMTAgMTYgMTBDMTIuNjg2MyAxMCAxMCAxMi42ODYzIDEwIDE2QzEwIDE5LjMxMzcgMTIuNjg2MyAyMiAxNiAyMloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo="
+    />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="ozel-style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Preload critical resources -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      as="style"
+    />
+  </head>
+  <body>
+    <!-- Header ve Navigasyon -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <h1>💕 Cenk & Tuğçe 💕</h1>
+          </div>
+          <nav class="navigation">
+            <ul class="nav-menu">
+              <li>
+                <a
+                  href="#ana-sayfa"
+                  class="nav-link active"
+                  data-section="ana-sayfa"
+                  >🏠 Ana Sayfa</a
+                >
+              </li>
+              <li>
+                <a href="#filmler" class="nav-link" data-section="filmler"
+                  >🎬 Filmler</a
+                >
+              </li>
+              <li>
+                <a href="#diziler" class="nav-link" data-section="diziler"
+                  >📺 Diziler</a
+                >
+              </li>
+              <li>
+                <a href="#oyunlar" class="nav-link" data-section="oyunlar"
+                  >🎮 Oyunlar</a
+                >
+              </li>
+              <li>
+                <a href="#mekanlar" class="nav-link" data-section="mekanlar"
+                  >📍 Mekanlar</a
+                >
+              </li>
+              <li>
+                <a href="#anilar" class="nav-link" data-section="anilar"
+                  >🖼️ Anılar</a
+                >
+              </li>
+            </ul>
+          </nav>
+          <div class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Ana İçerik -->
+    <main class="main-content">
+      <!-- Ana Sayfa Bölümü -->
+      <section id="ana-sayfa" class="section active">
+        <div class="container">
+          <div class="welcome-section">
+            <div class="welcome-content">
+              <div class="welcome-header">
+                <h2 class="welcome-title">💖 Hoş Geldiniz 💖</h2>
+                <p class="welcome-subtitle">Cenk ve Tuğçe'nin Özel Dünyasına</p>
+              </div>
+
+              <div class="love-stats">
+                <div class="stat-item">
+                  <span class="stat-number" id="love-days">0</span>
+                  <span class="stat-label">Gün</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number" id="love-hours">0</span>
+                  <span class="stat-label">Saat</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number" id="love-minutes">0</span>
+                  <span class="stat-label">Dakika</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number" id="love-seconds">0</span>
+                  <span class="stat-label">Saniye</span>
+                </div>
+              </div>
+
+              <div class="love-messages">
+                <p class="love-message active" id="current-message">
+                  Birlikte geçirdiğimiz her an bir hazine... ❤️
+                </p>
+                <div class="message-indicators">
+                  <span class="indicator active"></span>
+                  <span class="indicator"></span>
+                  <span class="indicator"></span>
+                  <span class="indicator"></span>
+                </div>
+              </div>
+
+              <div class="special-buttons">
+                <button class="special-btn" onclick="showRandomHeart()">
+                  💕 Kalp Gönder
+                </button>
+                <button class="special-btn" onclick="showLoveQuote()">
+                  💖 Aşk Sözü
+                </button>
+                <button class="special-btn" onclick="createHeartExplosion()">
+                  💥 Kalp Patlaması
+                </button>
+              </div>
+            </div>
+
+            <div class="floating-hearts">
+              <div class="heart">💕</div>
+              <div class="heart">💖</div>
+              <div class="heart">💗</div>
+              <div class="heart">💝</div>
+              <div class="heart">💘</div>
+              <div class="heart">❤️</div>
+              <div class="heart">💙</div>
+              <div class="heart">💚</div>
+            </div>
+
+            <div class="background-effects">
+              <div class="sparkle">✨</div>
+              <div class="sparkle">⭐</div>
+              <div class="sparkle">✨</div>
+              <div class="sparkle">⭐</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filmler Bölümü -->
+      <section id="filmler" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>🎬 Birlikte İzlediğimiz Filmler</h2>
+            <button class="add-btn" onclick="openAddModal('film')">
+              + Yeni Film Ekle
+            </button>
+          </div>
+          <div class="filter-bar">
+            <input
+              type="text"
+              id="film-search"
+              placeholder="Film ara..."
+              class="search-input"
+            />
+            <select id="film-genre" class="filter-select">
+              <option value="">Tüm Türler</option>
+              <option value="Romantik">Romantik</option>
+              <option value="Komedi">Komedi</option>
+              <option value="Drama">Drama</option>
+              <option value="Aksiyon">Aksiyon</option>
+              <option value="Bilim Kurgu">Bilim Kurgu</option>
+            </select>
+          </div>
+          <div class="cards-grid" id="film-cards">
+            <!-- Film kartları buraya dinamik olarak eklenecek -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Diziler Bölümü -->
+      <section id="diziler" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>📺 Birlikte İzlediğimiz Diziler</h2>
+            <button class="add-btn" onclick="openAddModal('dizi')">
+              + Yeni Dizi Ekle
+            </button>
+          </div>
+          <div class="filter-bar">
+            <input
+              type="text"
+              id="dizi-search"
+              placeholder="Dizi ara..."
+              class="search-input"
+            />
+            <select id="dizi-genre" class="filter-select">
+              <option value="">Tüm Türler</option>
+              <option value="Romantik">Romantik</option>
+              <option value="Komedi">Komedi</option>
+              <option value="Drama">Drama</option>
+              <option value="Gerilim">Gerilim</option>
+              <option value="Fantastik">Fantastik</option>
+            </select>
+          </div>
+          <div class="cards-grid" id="dizi-cards">
+            <!-- Dizi kartları buraya dinamik olarak eklenecek -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Oyunlar Bölümü -->
+      <section id="oyunlar" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>🎮 Birlikte Oynadığımız Oyunlar</h2>
+            <button class="add-btn" onclick="openAddModal('oyun')">
+              + Yeni Oyun Ekle
+            </button>
+          </div>
+          <div class="filter-bar">
+            <input
+              type="text"
+              id="oyun-search"
+              placeholder="Oyun ara..."
+              class="search-input"
+            />
+            <select id="oyun-type" class="filter-select">
+              <option value="">Tüm Türler</option>
+              <option value="Multiplayer">Multiplayer</option>
+              <option value="Co-op">Co-op</option>
+              <option value="RPG">RPG</option>
+              <option value="Strateji">Strateji</option>
+              <option value="Puzzle">Puzzle</option>
+            </select>
+          </div>
+          <div class="cards-grid" id="oyun-cards">
+            <!-- Oyun kartları buraya dinamik olarak eklenecek -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Mekanlar Bölümü -->
+      <section id="mekanlar" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>📍 Birlikte Gittiğimiz Mekanlar</h2>
+            <button class="add-btn" onclick="openAddModal('mekan')">
+              + Yeni Mekan Ekle
+            </button>
+          </div>
+          <div class="filter-bar">
+            <input
+              type="text"
+              id="mekan-search"
+              placeholder="Mekan ara..."
+              class="search-input"
+            />
+            <select id="mekan-type" class="filter-select">
+              <option value="">Tüm Mekanlar</option>
+              <option value="Restoran">Restoran</option>
+              <option value="Kafe">Kafe</option>
+              <option value="Park">Park</option>
+              <option value="Müze">Müze</option>
+              <option value="Sinema">Sinema</option>
+            </select>
+          </div>
+          <div class="cards-grid" id="mekan-cards">
+            <!-- Mekan kartları buraya dinamik olarak eklenecek -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Anılar Bölümü -->
+      <section id="anilar" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>🖼️ Güzel Anılarımız</h2>
+            <button class="add-btn" onclick="openAddModal('anı')">
+              + Yeni Anı Ekle
+            </button>
+          </div>
+          <div class="memories-gallery" id="memories-gallery">
+            <!-- Anı fotoğrafları buraya dinamik olarak eklenecek -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="add-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">Yeni Ekle</h3>
+          <span class="close">&times;</span>
+        </div>
+        <form id="add-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="item-name">İsim:</label>
+              <input
+                type="text"
+                id="item-name"
+                required
+                placeholder="Örn: Titanic"
+              />
+            </div>
+            <div class="form-group">
+              <label for="item-rating">Puanımız:</label>
+              <select id="item-rating">
+                <option value="1">1 ❤️</option>
+                <option value="2">2 ❤️</option>
+                <option value="3">3 ❤️</option>
+                <option value="4">4 ❤️</option>
+                <option value="5">5 ❤️</option>
+                <option value="6">6 ❤️</option>
+                <option value="7">7 ❤️</option>
+                <option value="8">8 ❤️</option>
+                <option value="9">9 ❤️</option>
+                <option value="10" selected>10 ❤️</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="item-description">Açıklama:</label>
+            <textarea
+              id="item-description"
+              rows="3"
+              placeholder="Bu film/dizi/oyun hakkında ne düşünüyorsunuz?"
+            ></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="item-date">Tarih:</label>
+              <input type="date" id="item-date" />
+            </div>
+            <div class="form-group">
+              <label for="item-image">Fotoğraf URL:</label>
+              <input type="url" id="item-image" placeholder="https://..." />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button
+              type="button"
+              class="cancel-btn"
+              onclick="closeModalFunction()"
+            >
+              İptal
+            </button>
+            <button type="submit" class="submit-btn">💖 Ekle</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="ozel-script.js"></script>
+  </body>
+</html>
