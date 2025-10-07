@@ -1,36 +1,44 @@
-*{
+* {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
 }
-body{
+
+body {
     --main-font: 'Poppins', sans-serif;
     --main-color: #0c7f86;
     --main-body-color: #084b4f;
     color: var(--main-body-color);
-    font-family: var(--main-font);  
+    font-family: var(--main-font);
 }
-.container{
+
+.container {
     width: 100%;
     max-width: 1200px;
     padding: 0 24px;
     margin: 0 auto;
 }
-header{
+
+header {
     padding-top: 60px;
 }
-.header-logo img{
+
+.header-logo img {
     width: 98px;
     height: 56px;
 }
-.coming-holder{
+
+.coming-holder {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
 }
-.coming-text{
+
+.coming-text {
     width: 60%;
 }
-.coming-text h1{
+
+.coming-text h1 {
     padding-top: 100px;
     padding-bottom: 20px;
     font-size: 120px;
@@ -40,7 +48,8 @@ header{
     text-align: left;
     color: var(--main-color);
 }
-.coming-text .subtitle{
+
+.coming-text .subtitle {
     color: var(--main-color);
     font-size: 32px;
     font-weight: 700;
@@ -48,7 +57,8 @@ header{
     letter-spacing: 30px;
     padding-top: 15px;
 }
-.wave-image{
+
+.wave-image {
     background-image: url('images/wavy-shape.png');
     width: 100%;
     height: 20px;
@@ -57,24 +67,29 @@ header{
     background-repeat: repeat-x;
     animation: wavy-motion 15s linear infinite;
 }
+
 @keyframes wavy-motion {
     from {
         background-position-x: 0%;
     }
+
     to {
         background-position-x: 645px;
     }
 }
-.coming-form{
+
+.coming-form {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 60px;
 }
-.arrow{
+
+.arrow {
     width: 34px;
     height: 50px;
 }
+
 .coming-form input {
     font-family: var(--main-font);
     font-size: 18px;
@@ -88,15 +103,18 @@ header{
     box-shadow: 0px 0px 30px 7px #0c7f8640;
     transition: 0.5s ease;
 }
+
 .coming-form input::placeholder {
     font-family: var(--main-font);
     color: var(--main-color);
     font-size: 18px;
 }
+
 .coming-form input:focus {
     border-color: var(--main-color);
     box-shadow: unset;
 }
+
 .btn {
     font-family: var(--main-font);
     padding: 25px 24px;
@@ -112,25 +130,30 @@ header{
     border: none;
     transition: 0.5s ease;
 }
+
 .btn:hover {
     background-color: var(--main-body-color);
 }
+
 .coming-image {
     width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .img-box {
     position: relative;
     margin-bottom: 32px;
 }
+
 .img-box img {
     position: relative;
     max-width: 100%;
     border-radius: 50%;
     z-index: 1;
 }
+
 .circle-1 {
     position: absolute;
     border-radius: 50%;
@@ -142,6 +165,7 @@ header{
     animation: animate-circle-1 8s linear infinite;
     z-index: 2;
 }
+
 .circle-2 {
     position: absolute;
     border-radius: 50%;
@@ -153,53 +177,63 @@ header{
     animation: animate-circle-2 3s linear infinite alternate;
     z-index: 0;
 }
+
 @keyframes animate-circle-1 {
     0% {
         top: -20px;
         left: -20px;
     }
+
     50% {
         top: -20px;
         left: 20px;
         border-color: var(--main-color);
     }
+
     100% {
         top: -20px;
         left: -20px;
     }
 }
+
 @keyframes animate-circle-2 {
     from {
         top: -70px;
     }
+
     to {
         top: 10px;
         border-color: var(--main-color);
     }
 }
-.img-text h4{
+
+.img-text h4 {
     color: var(--main-body-color);
     font-size: 32px;
     font-weight: 600;
     line-height: 30px;
 }
-.img-text .subtitle{
+
+.img-text .subtitle {
     font-size: 16px;
     font-weight: 400;
     line-height: 30px;
     margin-bottom: 24px;
 }
-.img-text .body{
+
+.img-text .body {
     line-height: 30px;
     margin-bottom: 24px;
 }
-.coming-links{
+
+.coming-links {
     padding-bottom: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
-.caption{
+
+.caption {
     color: var(--main-body-color);
     padding: 8px 8px 0px 0px;
     text-decoration: none;
@@ -210,10 +244,12 @@ header{
     letter-spacing: 5px;
     z-index: 3;
 }
-.caption:hover{
+
+.caption:hover {
     color: var(--main-color);
 }
-.bg-shape-1{
+
+.bg-shape-1 {
     background-color: #e5fff9;
     top: 0;
     left: 0;
@@ -222,6 +258,7 @@ header{
     position: fixed;
     z-index: -1;
 }
+
 .bg-shape-2 {
     background-color: #b8e4da;
     top: 0;
@@ -231,7 +268,8 @@ header{
     position: fixed;
     z-index: -1;
 }
-h2{
+
+h2 {
     padding-top: 50px;
     padding-bottom: 20px;
     font-size: 48px;
@@ -239,11 +277,13 @@ h2{
     text-align: left;
     color: var(--main-color);
 }
+
 .about-me .subtitle {
     font-size: 16px;
     font-weight: 400;
     line-height: 30px;
 }
+
 .textbox {
     padding: 20px 24px;
     border: 1px solid #fff;
@@ -251,42 +291,55 @@ h2{
     background-color: #fff;
     box-shadow: 0px 0px 30px 7px #0c7f8640;
 }
-.about-me-text{
+
+.about-me-text {
     font-size: 16px;
     font-weight: 400;
     line-height: 30px;
     color: var(--main-font);
     text-align: justify;
 }
-.experience h3, .education h3, .skills h3{
+
+.experience h3,
+.education h3,
+.skills h3 {
     font-size: 24px;
     font-weight: 700;
     text-align: left;
     color: var(--main-color);
     margin-bottom: 10px;
 }
-.experience h4, .education h4, .skills h4{
+
+.experience h4,
+.education h4,
+.skills h4 {
     margin-bottom: 10px;
 }
-.date{
+
+.date {
     margin-bottom: 10px;
     font-size: 14px;
 }
-.experience-text{
+
+.experience-text {
     font-size: 16px;
     font-weight: 400;
     line-height: 30px;
     color: var(--main-font);
     text-align: justify;
 }
-.experiences .textbox, .skills .textbox{
+
+.experiences .textbox,
+.skills .textbox {
     margin-bottom: 30px;
 }
-.web-project-portfolio a{
+
+.web-project-portfolio a {
     text-decoration: none;
     color: var(--main-color);
 }
-a{
+
+a {
     text-decoration: none;
 }
 
@@ -295,6 +348,7 @@ a{
         flex-direction: column;
         align-items: center;
         text-align: center;
+        justify-content: center;
     }
 
     .coming-text {
