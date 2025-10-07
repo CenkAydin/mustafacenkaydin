@@ -7,17 +7,105 @@ const modal = document.getElementById("add-modal");
 const closeModal = document.querySelector(".close");
 const addForm = document.getElementById("add-form");
 
+// Firebase Elements
+const loginModal = document.getElementById("loginModal");
+const loginForm = document.getElementById("loginForm");
+
 // Aşk sayacı için başlangıç tarihi
 const loveStartDate = new Date("2024-10-08T22:50:00");
 
+// Firebase State
+let currentUser = null;
+let firebaseReady = false;
+
 // Sayfa yüklendiğinde çalışacak fonksiyonlar
 document.addEventListener("DOMContentLoaded", function () {
-  initializeNavigation();
-  initializeLoveTimer();
-  initializeModal();
-  loadStoredData();
-  initializeFloatingHearts();
+  // Firebase'in yüklenmesini bekle
+  waitForFirebase().then(() => {
+    initializeFirebase();
+    initializeNavigation();
+    initializeLoveTimer();
+    initializeModal();
+    initializeFloatingHearts();
+  });
 });
+
+// Firebase'in yüklenmesini bekle
+function waitForFirebase() {
+  return new Promise((resolve) => {
+    const checkFirebase = () => {
+      if (window.firebase) {
+        firebaseReady = true;
+        resolve();
+      } else {
+        setTimeout(checkFirebase, 100);
+      }
+    };
+    checkFirebase();
+  });
+}
+
+// Firebase Authentication ve Firestore başlatma
+function initializeFirebase() {
+  if (!firebaseReady) {
+    // Firebase yüklenmediyse localStorage kullan
+    console.log("Firebase not ready, using localStorage fallback");
+    hideLoginModal();
+    loadStoredData();
+    return;
+  }
+
+  // Authentication state listener
+  window.firebase.onAuthStateChanged(window.firebase.auth, (user) => {
+    currentUser = user;
+    if (user) {
+      // Kullanıcı giriş yapmış
+      hideLoginModal();
+      loadFirebaseData();
+      showNotification("💖 Hoş geldiniz!", "success");
+    } else {
+      // Kullanıcı giriş yapmamış
+      showLoginModal();
+    }
+  });
+
+  // Login form event listener
+  loginForm.addEventListener("submit", handleLogin);
+}
+
+// Login fonksiyonu
+async function handleLogin(e) {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  try {
+    await window.firebase.signInWithEmailAndPassword(
+      window.firebase.auth,
+      email,
+      password
+    );
+    showNotification("💕 Giriş başarılı!", "success");
+  } catch (error) {
+    console.error("Login error:", error);
+    showNotification("❌ Giriş hatası: " + error.message, "error");
+  }
+}
+
+// Login modal'ını göster
+function showLoginModal() {
+  if (loginModal) {
+    loginModal.style.display = "flex";
+  }
+}
+
+// Login modal'ını gizle
+function hideLoginModal() {
+  if (loginModal) {
+    loginModal.style.display = "none";
+  }
+}
 
 // Navigasyon fonksiyonları
 function initializeNavigation() {
@@ -118,9 +206,8 @@ function closeModalFunction() {
   addForm.reset();
 }
 
-function handleFormSubmit() {
+async function handleFormSubmit() {
   const formData = {
-    id: Date.now(),
     name: document.getElementById("item-name").value,
     description: document.getElementById("item-description").value,
     rating: document.getElementById("item-rating").value,
@@ -130,17 +217,26 @@ function handleFormSubmit() {
     createdAt: new Date().toISOString(),
   };
 
-  // Veriyi localStorage'a kaydet
-  saveItem(formData);
+  try {
+    if (firebaseReady && currentUser) {
+      // Firebase'e kaydet
+      await saveItemToFirebase(formData);
+    } else {
+      // localStorage'a kaydet
+      formData.id = Date.now();
+      saveItem(formData);
+      addCard(formData);
+    }
 
-  // Kartı ekle
-  addCard(formData);
+    // Modal'ı kapat
+    closeModalFunction();
 
-  // Modal'ı kapat
-  closeModalFunction();
-
-  // Başarı mesajı göster
-  showNotification(`${formData.name} başarıyla eklendi! 💕`);
+    // Başarı mesajı
+    showNotification(`${formData.name} başarıyla eklendi! 💕`);
+  } catch (error) {
+    console.error("Error saving item:", error);
+    showNotification("❌ Kaydetme hatası!", "error");
+  }
 }
 
 // Veri yönetimi fonksiyonları
@@ -155,6 +251,254 @@ function getStoredItems() {
   return stored ? JSON.parse(stored) : [];
 }
 
+// Firebase veri yükleme
+function loadFirebaseData() {
+  if (!currentUser) return;
+
+  // Real-time listener for all items
+  const itemsRef = window.firebase.collection(
+    window.firebase.db,
+    "loveData",
+    currentUser.uid,
+    "items"
+  );
+  const q = window.firebase.query(
+    itemsRef,
+    window.firebase.orderBy("createdAt", "desc")
+  );
+
+  window.firebase.onSnapshot(
+    q,
+    (snapshot) => {
+      const items = [];
+      snapshot.forEach((doc) => {
+        items.push({id: doc.id, ...doc.data()});
+      });
+
+      // Clear existing cards
+      clearAllCards();
+
+      // Add cards for each item
+      items.forEach((item) => {
+        addCard(item);
+      });
+
+      // If no items, add sample data
+      if (items.length === 0) {
+        addSampleData();
+      }
+    },
+    (error) => {
+      console.error("Error loading data:", error);
+      showNotification("❌ Veri yükleme hatası!", "error");
+    }
+  );
+}
+
+// Tüm kartları temizle
+function clearAllCards() {
+  const containers = [
+    document.getElementById("filmler-container"),
+    document.getElementById("diziler-container"),
+    document.getElementById("oyunlar-container"),
+    document.getElementById("mekanlar-container"),
+    document.getElementById("anilar-container"),
+  ];
+
+  containers.forEach((container) => {
+    if (container) {
+      container.innerHTML = "";
+    }
+  });
+}
+
+// Örnek veri ekleme
+async function addSampleData() {
+  const sampleData = [
+    // Filmler
+    {
+      name: "Titanic",
+      description: "Romantik drama filmi. Jack ve Rose'un aşk hikayesi...",
+      rating: 10,
+      date: "2024-01-15",
+      image:
+        "https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=400",
+      type: "film",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "La La Land",
+      description: "Müzikal romantik film. Sebastian ve Mia'nın hikayesi...",
+      rating: 9,
+      date: "2024-01-20",
+      image:
+        "https://images.unsplash.com/photo-1489599808087-1b0b4b4b4b4b?w=400",
+      type: "film",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "The Notebook",
+      description: "Klasik romantik film. Noah ve Allie'nin aşk hikayesi...",
+      rating: 10,
+      date: "2024-02-01",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "film",
+      createdAt: new Date().toISOString(),
+    },
+    // Diziler
+    {
+      name: "Friends",
+      description: "Klasik komedi dizisi. 6 arkadaşın hikayesi...",
+      rating: 9,
+      date: "2024-01-25",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "dizi",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "The Office",
+      description:
+        "Mokumenter komedi dizisi. Dunder Mifflin'deki günlük hayat...",
+      rating: 8,
+      date: "2024-02-05",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "dizi",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "Stranger Things",
+      description:
+        "Bilim kurgu gerilim dizisi. Hawkins'teki gizemli olaylar...",
+      rating: 9,
+      date: "2024-02-10",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "dizi",
+      createdAt: new Date().toISOString(),
+    },
+    // Oyunlar
+    {
+      name: "Minecraft",
+      description: "Yaratıcılık oyunu. Birlikte dünya inşa ettik...",
+      rating: 10,
+      date: "2024-01-30",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "oyun",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "Among Us",
+      description: "Sosyal dedüksiyon oyunu. Eğlenceli vakit geçirdik...",
+      rating: 8,
+      date: "2024-02-15",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "oyun",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "Fall Guys",
+      description: "Parti oyunu. Komik yarışlar yaptık...",
+      rating: 7,
+      date: "2024-02-20",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "oyun",
+      createdAt: new Date().toISOString(),
+    },
+    // Mekanlar
+    {
+      name: "Boğaz Köprüsü",
+      description: "İlk kez birlikte geçtik. Muhteşem manzara...",
+      rating: 10,
+      date: "2024-01-10",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "mekan",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "Galata Kulesi",
+      description: "Romantik akşam yemeği. Şehir manzarası harika...",
+      rating: 9,
+      date: "2024-01-18",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "mekan",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "Emirgan Korusu",
+      description: "Doğa yürüyüşü. Lale zamanı çok güzeldi...",
+      rating: 8,
+      date: "2024-02-25",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "mekan",
+      createdAt: new Date().toISOString(),
+    },
+    // Anılar
+    {
+      name: "İlk Buluşma",
+      description: "Kahve içtiğimiz ilk gün. Çok heyecanlıydık...",
+      rating: 10,
+      date: "2024-01-05",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "anı",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "Doğum Günü",
+      description: "Sürpriz doğum günü partisi. Çok mutlu oldum...",
+      rating: 10,
+      date: "2024-01-28",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "anı",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      name: "Yılbaşı",
+      description: "Birlikte geçirdiğimiz ilk yılbaşı. Unutulmaz...",
+      rating: 10,
+      date: "2024-01-01",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+      type: "anı",
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
+  // Sample data'yı Firebase'e ekle
+  for (const item of sampleData) {
+    await saveItemToFirebase(item);
+  }
+}
+
+// Firebase'e veri kaydetme
+async function saveItemToFirebase(item) {
+  if (!currentUser) return;
+
+  try {
+    const itemsRef = window.firebase.collection(
+      window.firebase.db,
+      "loveData",
+      currentUser.uid,
+      "items"
+    );
+    await window.firebase.addDoc(itemsRef, item);
+  } catch (error) {
+    console.error("Error saving item:", error);
+    showNotification("❌ Veri kaydetme hatası!", "error");
+  }
+}
+
+// localStorage fallback fonksiyonları
 function loadStoredData() {
   const items = getStoredItems();
 
@@ -176,21 +520,20 @@ function loadStoredData() {
       {
         id: 2,
         name: "La La Land",
-        description:
-          "Müzikal romantik film. Sebastian ve Mia'nın Hollywood aşkı...",
+        description: "Müzikal romantik film. Sebastian ve Mia'nın hikayesi...",
         rating: 9,
-        date: "2024-02-20",
+        date: "2024-01-20",
         image:
-          "https://images.unsplash.com/photo-1489599808412-4b8b8b8b8b8b?w=400",
+          "https://images.unsplash.com/photo-1489599808087-1b0b4b4b4b4b?w=400",
         type: "film",
         createdAt: new Date().toISOString(),
       },
       {
         id: 3,
         name: "The Notebook",
-        description: "Klasik romantik film. Noah ve Allie'nin zamansız aşkı...",
+        description: "Klasik romantik film. Noah ve Allie'nin aşk hikayesi...",
         rating: 10,
-        date: "2024-03-10",
+        date: "2024-02-01",
         image:
           "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "film",
@@ -200,11 +543,11 @@ function loadStoredData() {
       {
         id: 4,
         name: "Friends",
-        description: "Klasik komedi dizisi. 6 arkadaşın New York maceraları...",
+        description: "Klasik komedi dizisi. 6 arkadaşın hikayesi...",
         rating: 9,
-        date: "2024-01-20",
+        date: "2024-01-25",
         image:
-          "https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=400",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "dizi",
         createdAt: new Date().toISOString(),
       },
@@ -212,20 +555,21 @@ function loadStoredData() {
         id: 5,
         name: "The Office",
         description:
-          "Mokumenter komedi. Dunder Mifflin şirketindeki günlük hayat...",
+          "Mokumenter komedi dizisi. Dunder Mifflin'deki günlük hayat...",
         rating: 8,
-        date: "2024-02-25",
+        date: "2024-02-05",
         image:
-          "https://images.unsplash.com/photo-1489599808412-4b8b8b8b8b8b?w=400",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "dizi",
         createdAt: new Date().toISOString(),
       },
       {
         id: 6,
         name: "Stranger Things",
-        description: "Bilim kurgu gerilim. Hawkins'teki gizemli olaylar...",
+        description:
+          "Bilim kurgu gerilim dizisi. Hawkins'teki gizemli olaylar...",
         rating: 9,
-        date: "2024-03-15",
+        date: "2024-02-10",
         image:
           "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "dizi",
@@ -234,33 +578,32 @@ function loadStoredData() {
       // Oyunlar
       {
         id: 7,
-        name: "It Takes Two",
-        description: "Co-op macera oyunu. Cody ve May'in aşk hikayesi...",
+        name: "Minecraft",
+        description: "Yaratıcılık oyunu. Birlikte dünya inşa ettik...",
         rating: 10,
         date: "2024-01-30",
         image:
-          "https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=400",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "oyun",
         createdAt: new Date().toISOString(),
       },
       {
         id: 8,
-        name: "Overcooked 2",
-        description:
-          "Kaotik mutfak simülasyonu. Birlikte yemek yapma macerası...",
+        name: "Among Us",
+        description: "Sosyal dedüksiyon oyunu. Eğlenceli vakit geçirdik...",
         rating: 8,
-        date: "2024-02-10",
+        date: "2024-02-15",
         image:
-          "https://images.unsplash.com/photo-1489599808412-4b8b8b8b8b8b?w=400",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "oyun",
         createdAt: new Date().toISOString(),
       },
       {
         id: 9,
-        name: "Minecraft",
-        description: "Yaratıcılık oyunu. Birlikte dünya inşa etme...",
-        rating: 9,
-        date: "2024-03-05",
+        name: "Fall Guys",
+        description: "Parti oyunu. Komik yarışlar yaptık...",
+        rating: 7,
+        date: "2024-02-20",
         image:
           "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "oyun",
@@ -270,32 +613,31 @@ function loadStoredData() {
       {
         id: 10,
         name: "Boğaz Köprüsü",
-        description:
-          "İstanbul'un en romantik manzarası. Güneş batımında yürüyüş...",
+        description: "İlk kez birlikte geçtik. Muhteşem manzara...",
         rating: 10,
-        date: "2024-01-12",
+        date: "2024-01-10",
         image:
-          "https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=400",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "mekan",
         createdAt: new Date().toISOString(),
       },
       {
         id: 11,
         name: "Galata Kulesi",
-        description: "Tarihi kule manzarası. Şehri tepeden izleme...",
+        description: "Romantik akşam yemeği. Şehir manzarası harika...",
         rating: 9,
-        date: "2024-02-18",
+        date: "2024-01-18",
         image:
-          "https://images.unsplash.com/photo-1489599808412-4b8b8b8b8b8b?w=400",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "mekan",
         createdAt: new Date().toISOString(),
       },
       {
         id: 12,
         name: "Emirgan Korusu",
-        description: "Doğa içinde romantik yürüyüş. Lale zamanı...",
+        description: "Doğa yürüyüşü. Lale zamanı çok güzeldi...",
         rating: 8,
-        date: "2024-03-22",
+        date: "2024-02-25",
         image:
           "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "mekan",
@@ -305,31 +647,31 @@ function loadStoredData() {
       {
         id: 13,
         name: "İlk Buluşma",
-        description: "Unutulmaz ilk randevu. Kahve içerken tanışma...",
+        description: "Kahve içtiğimiz ilk gün. Çok heyecanlıydık...",
         rating: 10,
-        date: "2024-10-08",
+        date: "2024-01-05",
         image:
-          "https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=400",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "anı",
         createdAt: new Date().toISOString(),
       },
       {
         id: 14,
         name: "Doğum Günü",
-        description: "Sürpriz doğum günü kutlaması. Pasta ve hediyeler...",
+        description: "Sürpriz doğum günü partisi. Çok mutlu oldum...",
         rating: 10,
-        date: "2024-11-15",
+        date: "2024-01-28",
         image:
-          "https://images.unsplash.com/photo-1489599808412-4b8b8b8b8b8b?w=400",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "anı",
         createdAt: new Date().toISOString(),
       },
       {
         id: 15,
-        name: "Yılbaşı Gecesi",
-        description: "Birlikte geçirdiğimiz ilk yılbaşı. Havai fişekler...",
-        rating: 9,
-        date: "2024-12-31",
+        name: "Yılbaşı",
+        description: "Birlikte geçirdiğimiz ilk yılbaşı. Unutulmaz...",
+        rating: 10,
+        date: "2024-01-01",
         image:
           "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
         type: "anı",
@@ -337,15 +679,23 @@ function loadStoredData() {
       },
     ];
 
+    // Sample data'yı localStorage'a kaydet
     sampleData.forEach((item) => {
       saveItem(item);
-      addCard(item);
-    });
-  } else {
-    items.forEach((item) => {
-      addCard(item);
     });
   }
+
+  // Tüm öğeleri yükle ve kartları oluştur
+  const allItems = getStoredItems();
+  allItems.forEach((item) => {
+    addCard(item);
+  });
+}
+
+function saveItem(item) {
+  const items = getStoredItems();
+  items.push(item);
+  localStorage.setItem("lovePageData", JSON.stringify(items));
 }
 
 // Kart ekleme fonksiyonları
@@ -574,20 +924,37 @@ function editItem(id) {
   }
 }
 
-function deleteItem(id) {
+async function deleteItem(id) {
   if (confirm("Bu öğeyi silmek istediğinizden emin misiniz? 💔")) {
-    // DOM'dan kaldır
-    const card = document.querySelector(`[data-id="${id}"]`);
-    if (card) {
-      card.remove();
+    try {
+      if (firebaseReady && currentUser) {
+        // Firebase'den sil
+        const itemRef = window.firebase.doc(
+          window.firebase.db,
+          "loveData",
+          currentUser.uid,
+          "items",
+          id
+        );
+        await window.firebase.deleteDoc(itemRef);
+      } else {
+        // localStorage'dan sil
+        const items = getStoredItems();
+        const filteredItems = items.filter((item) => item.id !== id);
+        localStorage.setItem("lovePageData", JSON.stringify(filteredItems));
+
+        // DOM'dan kaldır
+        const card = document.querySelector(`[data-id="${id}"]`);
+        if (card) {
+          card.remove();
+        }
+      }
+
+      showNotification("Öğe silindi! 💔");
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      showNotification("❌ Silme hatası!", "error");
     }
-
-    // localStorage'dan kaldır
-    const items = getStoredItems();
-    const filteredItems = items.filter((item) => item.id !== id);
-    localStorage.setItem("lovePageData", JSON.stringify(filteredItems));
-
-    showNotification("Öğe silindi! 💔");
   }
 }
 

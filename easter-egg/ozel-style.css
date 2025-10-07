@@ -1294,3 +1294,176 @@ form {
         animation: none;
     }
 }
+
+/* ===== LOGIN MODAL STYLES ===== */
+.login-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(233, 30, 99, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: modalFadeIn 0.5s ease-out;
+}
+
+.login-content {
+    background: linear-gradient(135deg, #fff 0%, #fce4ec 100%);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(233, 30, 99, 0.3);
+    animation: modalSlideIn 0.5s ease-out;
+    border: 2px solid rgba(233, 30, 99, 0.2);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #e91e63;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(233, 30, 99, 0.2);
+}
+
+.login-header p {
+    color: #666;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-form label {
+    font-weight: 600;
+    color: #e91e63;
+    font-size: 1rem;
+}
+
+.login-form input {
+    padding: 15px 20px;
+    border: 2px solid rgba(233, 30, 99, 0.2);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #e91e63;
+    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+    background: #fff;
+}
+
+.login-btn {
+    background: linear-gradient(135deg, #e91e63 0%, #f06292 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(233, 30, 99, 0.2);
+}
+
+.login-footer p {
+    color: #999;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Login Modal Animations */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Login Modal Responsive */
+@media (max-width: 768px) {
+    .login-content {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+    
+    .login-header h2 {
+        font-size: 2rem;
+    }
+    
+    .login-form input {
+        padding: 12px 15px;
+    }
+    
+    .login-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-content {
+        padding: 25px 15px;
+        margin: 15px;
+    }
+    
+    .login-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .login-footer p {
+        font-size: 0.8rem;
+    }
+}
