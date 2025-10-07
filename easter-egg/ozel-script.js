@@ -858,26 +858,31 @@ function createCard(item) {
             </div>
         </div>
         <div class="card-actions">
-            <button class="btn-edit" onclick="editItem(${
-              item.id
-            })" title="Düzenle">
+            <button class="btn-edit" data-id="${item.id}" title="Düzenle">
                 <span>✏️</span>
                 <span>Düzenle</span>
             </button>
-            <button class="btn-delete" onclick="deleteItem(${
-              item.id
-            })" title="Sil">
+            <button class="btn-delete" data-id="${item.id}" title="Sil">
                 <span>🗑️</span>
                 <span>Sil</span>
             </button>
-            <button class="btn-favorite" onclick="toggleFavorite(${
+            <button class="btn-favorite" data-id="${
               item.id
-            })" title="Favorilere Ekle">
+            }" title="Favorilere Ekle">
                 <span>💖</span>
                 <span>Favori</span>
             </button>
         </div>
     `;
+
+  // Event listeners ekle
+  const editBtn = card.querySelector(".btn-edit");
+  const deleteBtn = card.querySelector(".btn-delete");
+  const favoriteBtn = card.querySelector(".btn-favorite");
+
+  editBtn.addEventListener("click", () => editItem(item.id));
+  deleteBtn.addEventListener("click", () => deleteItem(item.id));
+  favoriteBtn.addEventListener("click", () => toggleFavorite(item.id));
 
   return card;
 }
