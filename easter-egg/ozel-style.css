@@ -22,7 +22,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
+    background-image:
         radial-gradient(circle at 20% 80%, rgba(233, 30, 99, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(240, 98, 146, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(255, 154, 158, 0.1) 0%, transparent 50%);
@@ -82,9 +82,17 @@ html {
 }
 
 @keyframes heartbeat {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .navigation {
@@ -124,8 +132,15 @@ html {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
 .mobile-menu-toggle {
@@ -161,8 +176,15 @@ html {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Ana Sayfa Stilleri */
@@ -173,6 +195,7 @@ html {
     min-height: calc(100vh - 100px);
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .welcome-content {
@@ -185,11 +208,21 @@ html {
     z-index: 2;
     border: 2px solid rgba(233, 30, 99, 0.1);
     animation: gentleFloat 6s ease-in-out infinite;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 @keyframes gentleFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .welcome-header {
@@ -206,8 +239,13 @@ html {
 }
 
 @keyframes titleGlow {
-    from { text-shadow: 3px 3px 6px rgba(233, 30, 99, 0.4); }
-    to { text-shadow: 3px 3px 6px rgba(233, 30, 99, 0.8), 0 0 20px rgba(233, 30, 99, 0.3); }
+    from {
+        text-shadow: 3px 3px 6px rgba(233, 30, 99, 0.4);
+    }
+
+    to {
+        text-shadow: 3px 3px 6px rgba(233, 30, 99, 0.8), 0 0 20px rgba(233, 30, 99, 0.3);
+    }
 }
 
 .welcome-subtitle {
@@ -219,8 +257,15 @@ html {
 }
 
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .love-stats {
@@ -248,8 +293,15 @@ html {
 }
 
 @keyframes statPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
 }
 
 .stat-number {
@@ -361,32 +413,67 @@ html {
     filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.3));
 }
 
-.heart:nth-child(1) { left: 10%; animation-delay: 0s; }
-.heart:nth-child(2) { left: 20%; animation-delay: 1s; }
-.heart:nth-child(3) { left: 30%; animation-delay: 2s; }
-.heart:nth-child(4) { left: 70%; animation-delay: 3s; }
-.heart:nth-child(5) { left: 80%; animation-delay: 4s; }
-.heart:nth-child(6) { left: 15%; animation-delay: 5s; }
-.heart:nth-child(7) { left: 85%; animation-delay: 6s; }
-.heart:nth-child(8) { left: 50%; animation-delay: 7s; }
+.heart:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.heart:nth-child(2) {
+    left: 20%;
+    animation-delay: 1s;
+}
+
+.heart:nth-child(3) {
+    left: 30%;
+    animation-delay: 2s;
+}
+
+.heart:nth-child(4) {
+    left: 70%;
+    animation-delay: 3s;
+}
+
+.heart:nth-child(5) {
+    left: 80%;
+    animation-delay: 4s;
+}
+
+.heart:nth-child(6) {
+    left: 15%;
+    animation-delay: 5s;
+}
+
+.heart:nth-child(7) {
+    left: 85%;
+    animation-delay: 6s;
+}
+
+.heart:nth-child(8) {
+    left: 50%;
+    animation-delay: 7s;
+}
 
 @keyframes floatUp {
     0% {
         transform: translateY(100vh) rotate(0deg) scale(0.5);
         opacity: 0;
     }
+
     10% {
         opacity: 0.8;
         transform: translateY(90vh) rotate(36deg) scale(0.8);
     }
+
     50% {
         opacity: 1;
         transform: translateY(50vh) rotate(180deg) scale(1);
     }
+
     90% {
         opacity: 0.8;
         transform: translateY(10vh) rotate(324deg) scale(0.8);
     }
+
     100% {
         transform: translateY(-100px) rotate(360deg) scale(0.5);
         opacity: 0;
@@ -410,22 +497,40 @@ html {
     opacity: 0.6;
 }
 
-.sparkle:nth-child(1) { left: 5%; animation-delay: 0s; }
-.sparkle:nth-child(2) { left: 25%; animation-delay: 2.5s; }
-.sparkle:nth-child(3) { left: 75%; animation-delay: 5s; }
-.sparkle:nth-child(4) { left: 95%; animation-delay: 7.5s; }
+.sparkle:nth-child(1) {
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.sparkle:nth-child(2) {
+    left: 25%;
+    animation-delay: 2.5s;
+}
+
+.sparkle:nth-child(3) {
+    left: 75%;
+    animation-delay: 5s;
+}
+
+.sparkle:nth-child(4) {
+    left: 95%;
+    animation-delay: 7.5s;
+}
 
 @keyframes sparkleFloat {
     0% {
         transform: translateY(100vh) rotate(0deg);
         opacity: 0;
     }
+
     20% {
         opacity: 0.6;
     }
+
     80% {
         opacity: 0.6;
     }
+
     100% {
         transform: translateY(-100px) rotate(360deg);
         opacity: 0;
@@ -438,10 +543,12 @@ html {
         transform: scale(0) rotate(0deg);
         opacity: 1;
     }
+
     50% {
         transform: scale(1.5) rotate(180deg);
         opacity: 0.8;
     }
+
     100% {
         transform: scale(3) rotate(360deg);
         opacity: 0;
@@ -461,14 +568,17 @@ html {
         transform: translateY(0) scale(0);
         opacity: 0;
     }
+
     20% {
         transform: translateY(-20px) scale(1);
         opacity: 1;
     }
+
     80% {
         transform: translateY(-100px) scale(1);
         opacity: 1;
     }
+
     100% {
         transform: translateY(-200px) scale(0);
         opacity: 0;
@@ -862,8 +972,15 @@ html {
 }
 
 @keyframes heartBeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 /* Modal */
@@ -881,8 +998,13 @@ html {
 }
 
 @keyframes modalFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-content {
@@ -899,11 +1021,12 @@ html {
 }
 
 @keyframes modalSlideIn {
-    from { 
+    from {
         opacity: 0;
         transform: translate(-50%, -50%) scale(0.8);
     }
-    to { 
+
+    to {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
     }
@@ -1416,6 +1539,7 @@ form {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -1426,6 +1550,7 @@ form {
         opacity: 0;
         transform: translateY(-50px) scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -1438,15 +1563,15 @@ form {
         padding: 30px 20px;
         margin: 20px;
     }
-    
+
     .login-header h2 {
         font-size: 2rem;
     }
-    
+
     .login-form input {
         padding: 12px 15px;
     }
-    
+
     .login-btn {
         padding: 12px 25px;
         font-size: 1rem;
@@ -1458,11 +1583,11 @@ form {
         padding: 25px 15px;
         margin: 15px;
     }
-    
+
     .login-header h2 {
         font-size: 1.8rem;
     }
-    
+
     .login-footer p {
         font-size: 0.8rem;
     }
