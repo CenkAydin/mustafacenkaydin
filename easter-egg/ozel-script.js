@@ -307,6 +307,17 @@ function clearAllCards() {
 
   containers.forEach((container) => {
     if (container) {
+      // Mevcut tüm kartları ve event listener'ları temizle
+      const cards = container.querySelectorAll('.card');
+      cards.forEach(card => {
+        // Event listener'ları kaldır (memory leak önlemi)
+        const buttons = card.querySelectorAll('button');
+        buttons.forEach(btn => {
+          btn.removeEventListener('click', btn.onclick);
+        });
+        card.remove();
+      });
+      // Container'ı tamamen temizle
       container.innerHTML = "";
     }
   });
@@ -705,6 +716,13 @@ function addCard(item) {
 
   if (!container) return;
 
+  // Aynı ID'ye sahip kart varsa ekleme (duplicate önlemi)
+  const existingCard = container.querySelector(`[data-id="${item.id}"]`);
+  if (existingCard) {
+    console.log(`Card with ID ${item.id} already exists, skipping...`);
+    return;
+  }
+
   // Anılar için özel galeri kartı
   if (item.type === "anı") {
     const memoryItem = createMemoryCard(item);
@@ -875,14 +893,35 @@ function createCard(item) {
         </div>
     `;
 
-  // Event listeners ekle
+  // Event listeners ekle - Güvenli şekilde
   const editBtn = card.querySelector(".btn-edit");
   const deleteBtn = card.querySelector(".btn-delete");
   const favoriteBtn = card.querySelector(".btn-favorite");
 
-  editBtn.addEventListener("click", () => editItem(item.id));
-  deleteBtn.addEventListener("click", () => deleteItem(item.id));
-  favoriteBtn.addEventListener("click", () => toggleFavorite(item.id));
+  // Her bir butona event listener ekle
+  if (editBtn) {
+    editBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      editItem(item.id);
+    });
+  }
+  
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      deleteItem(item.id);
+    });
+  }
+  
+  if (favoriteBtn) {
+    favoriteBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleFavorite(item.id);
+    });
+  }
 
   return card;
 }
@@ -932,6 +971,13 @@ function editItem(id) {
 async function deleteItem(id) {
   if (confirm("Bu öğeyi silmek istediğinizden emin misiniz? 💔")) {
     try {
+      // Önce DOM'dan kaldır (hızlı UI feedback için)
+      const card = document.querySelector(`[data-id="${id}"]`);
+      if (card) {
+        card.style.opacity = '0.5';
+        card.style.pointerEvents = 'none';
+      }
+
       if (firebaseReady && currentUser) {
         // Firebase'den sil
         const itemRef = window.firebase.doc(
@@ -942,6 +988,11 @@ async function deleteItem(id) {
           id
         );
         await window.firebase.deleteDoc(itemRef);
+        
+        // Firebase silme başarılıysa DOM'dan da kaldır
+        if (card) {
+          card.remove();
+        }
       } else {
         // localStorage'dan sil
         const items = getStoredItems();
@@ -949,7 +1000,6 @@ async function deleteItem(id) {
         localStorage.setItem("lovePageData", JSON.stringify(filteredItems));
 
         // DOM'dan kaldır
-        const card = document.querySelector(`[data-id="${id}"]`);
         if (card) {
           card.remove();
         }
@@ -958,6 +1008,12 @@ async function deleteItem(id) {
       showNotification("Öğe silindi! 💔");
     } catch (error) {
       console.error("Error deleting item:", error);
+      // Hata olursa elementi geri getir
+      const card = document.querySelector(`[data-id="${id}"]`);
+      if (card) {
+        card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+      }
       showNotification("❌ Silme hatası!", "error");
     }
   }
